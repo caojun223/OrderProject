@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cao.mapper.GoodsHandleDtoMapper">
+    <select id="selectAllGoodsHandle" resultType="com.cao.dto.GoodsHandleDto">
+        SELECT gh.goods_id,gh.delivery_id,si.ship_name,ri.receipt_name,gh.goods_desc,gh.ship_date,gh.receipt_date FROM goods_handle gh,ship_info si,receipt_info ri
+        WHERE gh.ship_id=si.ship_id AND gh.receipt_id=ri.receipt_id
+        AND gh.goods_desc='未发货'
+        OR gh.goods_desc='运输中'
+        GROUP BY gh.delivery_id ORDER BY gh.goods_id
+    </select>
+    
+    <select id="selectAllGoodsHandleByGoodsId" resultType="com.cao.dto.GoodsHandleDto">
+        SELECT gh.goods_id,gh.delivery_id,si.ship_name,ri.receipt_name,gh.goods_desc,gh.ship_date,gh.receipt_date FROM goods_handle gh,ship_info si,receipt_info ri
+        WHERE gh.ship_id=si.ship_id
+        AND gh.receipt_id=ri.receipt_id
+        AND gh.goods_id=#{goods_id}
+    </select>
+
+    <select id="selectReceiptInfo" resultType="com.cao.dto.GoodsHandleDto">
+        SELECT gh.goods_id,gh.delivery_id,si.ship_name,ri.receipt_name,gh.goods_desc,gh.ship_date,gh.receipt_date FROM goods_handle gh,ship_info si,receipt_info ri
+        WHERE gh.ship_id=si.ship_id AND gh.receipt_id=ri.receipt_id
+        AND gh.goods_desc='已到站'
+        or gh.goods_desc='已签收'
+        GROUP BY gh.delivery_id ORDER BY gh.goods_id
+    </select>
+</mapper>

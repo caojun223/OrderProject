@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cao.mapper.StationInfoDtoMapper">
+    <select id="selectStationInfoDto" resultType="com.cao.dto.StationInfoDto">
+        SELECT si1.station_id,si1.station_number,si1.station_name,si1.station_type,si2.ship_id,
+        si2.ship_number,si2.ship_name,si2.ship_province,ri.receipt_id,ri.receipt_number,
+        ri.receipt_name,ri.receipt_province FROM station_info si1,ship_info si2,receipt_info ri
+        WHERE si1.ship_id=si2.ship_id
+        AND si1.receipt_id=ri.receipt_id
+    </select>
+</mapper>

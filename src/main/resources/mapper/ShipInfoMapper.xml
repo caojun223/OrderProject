@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cao.mapper.ShipInfoMapper">
+    <resultMap id="BaseResultMap" type="com.cao.pojo.ShipInfo">
+        <id column="Ship_Id" property="shipId" jdbcType="INTEGER"/>
+        <result column="Ship_Number" property="shipNumber" jdbcType="VARCHAR"/>
+        <result column="Ship_Name" property="shipName" jdbcType="VARCHAR"/>
+        <result column="Ship_Province" property="shipProvince" jdbcType="VARCHAR"/>
+        <result column="Ship_Address" property="shipAddress" jdbcType="VARCHAR"/>
+        <result column="Ship_Tel" property="shipTel" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    Ship_Id, Ship_Number, Ship_Name, Ship_Province, Ship_Address, Ship_Tel
+  </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cao.pojo.ShipInfoExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from ship_info
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from ship_info
+        where Ship_Id = #{shipId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ship_info
+    where Ship_Id = #{shipId,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.cao.pojo.ShipInfoExample">
+        delete from ship_info
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.cao.pojo.ShipInfo">
+    insert into ship_info (Ship_Id, Ship_Number, Ship_Name, 
+      Ship_Province, Ship_Address, Ship_Tel
+      )
+    values (#{shipId,jdbcType=INTEGER}, #{shipNumber,jdbcType=VARCHAR}, #{shipName,jdbcType=VARCHAR}, 
+      #{shipProvince,jdbcType=VARCHAR}, #{shipAddress,jdbcType=VARCHAR}, #{shipTel,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.cao.pojo.ShipInfo">
+        insert into ship_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="shipId != null">
+                Ship_Id,
+            </if>
+            <if test="shipNumber != null">
+                Ship_Number,
+            </if>
+            <if test="shipName != null">
+                Ship_Name,
+            </if>
+            <if test="shipProvince != null">
+                Ship_Province,
+            </if>
+            <if test="shipAddress != null">
+                Ship_Address,
+            </if>
+            <if test="shipTel != null">
+                Ship_Tel,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="shipId != null">
+                #{shipId,jdbcType=INTEGER},
+            </if>
+            <if test="shipNumber != null">
+                #{shipNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="shipName != null">
+                #{shipName,jdbcType=VARCHAR},
+            </if>
+            <if test="shipProvince != null">
+                #{shipProvince,jdbcType=VARCHAR},
+            </if>
+            <if test="shipAddress != null">
+                #{shipAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="shipTel != null">
+                #{shipTel,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.cao.pojo.ShipInfoExample" resultType="java.lang.Integer">
+        select count(*) from ship_info
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update ship_info
+        <set>
+            <if test="record.shipId != null">
+                Ship_Id = #{record.shipId,jdbcType=INTEGER},
+            </if>
+            <if test="record.shipNumber != null">
+                Ship_Number = #{record.shipNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="record.shipName != null">
+                Ship_Name = #{record.shipName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.shipProvince != null">
+                Ship_Province = #{record.shipProvince,jdbcType=VARCHAR},
+            </if>
+            <if test="record.shipAddress != null">
+                Ship_Address = #{record.shipAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.shipTel != null">
+                Ship_Tel = #{record.shipTel,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update ship_info
+        set Ship_Id = #{record.shipId,jdbcType=INTEGER},
+        Ship_Number = #{record.shipNumber,jdbcType=VARCHAR},
+        Ship_Name = #{record.shipName,jdbcType=VARCHAR},
+        Ship_Province = #{record.shipProvince,jdbcType=VARCHAR},
+        Ship_Address = #{record.shipAddress,jdbcType=VARCHAR},
+        Ship_Tel = #{record.shipTel,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cao.pojo.ShipInfo">
+        update ship_info
+        <set>
+            <if test="shipNumber != null">
+                Ship_Number = #{shipNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="shipName != null">
+                Ship_Name = #{shipName,jdbcType=VARCHAR},
+            </if>
+            <if test="shipProvince != null">
+                Ship_Province = #{shipProvince,jdbcType=VARCHAR},
+            </if>
+            <if test="shipAddress != null">
+                Ship_Address = #{shipAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="shipTel != null">
+                Ship_Tel = #{shipTel,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where Ship_Id = #{shipId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cao.pojo.ShipInfo">
+    update ship_info
+    set Ship_Number = #{shipNumber,jdbcType=VARCHAR},
+      Ship_Name = #{shipName,jdbcType=VARCHAR},
+      Ship_Province = #{shipProvince,jdbcType=VARCHAR},
+      Ship_Address = #{shipAddress,jdbcType=VARCHAR},
+      Ship_Tel = #{shipTel,jdbcType=VARCHAR}
+    where Ship_Id = #{shipId,jdbcType=INTEGER}
+  </update>
+</mapper>

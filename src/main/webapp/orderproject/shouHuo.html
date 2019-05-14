@@ -1,0 +1,95 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>站点列表</title>
+    <link rel="stylesheet" type="text/css" href="css/you.css"/>
+    <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+</head>
+
+<body>
+<!--上-->
+<div id="content">
+    <div id="haj1">
+        <div id="huang1">货物处理--收货</div>
+        <div id="huang2"></div>
+    </div>
+    <div id="haj2">
+        <div id="huang3">配送单编号：<input type="text" name="t1" class="input1"><input type="button" value="查询"/></div>
+    </div>
+</div>
+<!--下-->
+<div id="xia">
+    <div id="tabb">
+        <table width="200" border="1" id="table" class="tab">
+            <tr class="trs">
+                <td>配送单编号</td>
+                <td>发货起始站点</td>
+                <td>收货终止站点</td>
+                <td>状态</td>
+                <td>发货时间</td>
+                <td>收货时间</td>
+                <td>操作</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div id="haj4">
+    <div id="fen">第1/1页 每页10条</div>
+    <div id="ye"><img src="images/nos/nos_08.gif">
+        <img src="images/nos/nos_09.gif">1
+        <img src="images/nos/nos_10.gif">
+        <img src="images/nos/nos_11.gif">共1页
+    </div>
+</div>
+<script type="text/javascript">
+    $.ajax({
+        type: "post",
+        url: "/selectReceiptInfo",
+        async: true,
+        dataType: "json",
+        success: function (data) {
+            console.log(data);
+            $.each(data, function (index, element) {
+                var date = element.receipt_date;
+                // alert(date);
+                if (element.receipt_date != null) {
+                    date = element.receipt_date;
+                } else {
+                    date = '';
+                }
+                var trStr = "<tr>" +
+                    "<td>" + "<a href='goodsDetail.html' onclick='peisongdan(" + element.goods_id + ")'>" + element.delivery_id + "</a>" + "</td>" +
+                    "<td>" + element.ship_name + "</td>" +
+                    "<td>" + element.receipt_name + "</td>" +
+                    "<td>" + element.goods_desc + "</td>" +
+                    "<td>" + element.ship_date + "</td>" +
+                    "<td>" + date + "</td>" +
+                    "<td>" + "<a href='#' onclick='updateState(" + element.goods_id + ")'>收货</a>" + "</td>" +
+                    "</tr>"
+                $("#table").append(trStr);
+            })
+        }
+    })
+
+    function peisongdan(goods_id) {
+        // alert(goods_id);
+    }
+
+    function updateState(goods_id) {
+        // alert(goods_id);
+        $.ajax({
+            type: "post",
+            url: "/updateReceiptStateById",
+            dataType: "json",
+            data: {"goods_id": goods_id},
+            success: function (data) {
+                console.log(data);
+                if (data == 1) {
+                    window.location.href = "shouHuo.html";
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>

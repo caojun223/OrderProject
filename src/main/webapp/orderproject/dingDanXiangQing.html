@@ -1,0 +1,130 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>填写订单</title>
+    <link rel="stylesheet" type="text/css" href="css/you.css"/>
+    <script type="text/javascript" src="js/function.js"></script>
+    <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="js/vue-2.2.2-min.js"></script>
+</head>
+
+<body>
+<!--上-->
+<div id="content" style="height:70px;">
+    <div id="haj1">
+        <div id="huang1">订单</div>
+        <div id="huang2"></div>
+    </div>
+    <div id="haj3">
+        <div id="anniu2">
+        </div>
+    </div>
+    <div id="haj4">
+    </div>
+</div>
+<!--下-->
+<div id="xia" style=\"height:expression(body.offsetHeight-70);">
+    <div id="tabb">
+        <fieldset>
+            <legend>基本资料</legend>
+            <form name="form1">
+                <table width="200" border="1" id="table" class="tab">
+                    <tr>
+                        <td width="20%" class="tds2">订单编号：</td>
+                        <td width="30%" class="tds1">
+                            <input type="text" name="t1" class="input1" id="input1">
+                        </td>
+                        <td width="20%" class="tds2">下单日期：</td>
+                        <td width="30%" class="tds1">
+                            <input type="text" name="t1" class="input1" id="input2">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="20%" class="tds2">客户名：</td>
+                        <td width="30%" class="tds1">
+                            <input type="text" name="t1" class="input1" id="input3"></td>
+                        <td width="20%" class="tds2">客户电话：</td>
+                        <td width="30%" class="tds1">
+                            <input type="text" name="t1" class="input1" id="input4">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tds2">发货站点：</td>
+                        <td width="30%" class="tds1">
+                            <input type="text" name="t1" class="input1" id="input5">
+                        </td>
+                        <td class="tds2">收货站点：</td>
+                        <td width="30%" class="tds1">
+                            <input type="text" name="t1" class="input1" id="input6">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tds2">收货人：</td>
+                        <td width="30%" class="tds1">
+                            <input type="text" name="t1" class="input1" id="input7">
+                        </td>
+                        <td class="tds2">收货人电话：</td>
+                        <td width="30%" class="tds1">
+                            <input type="text" name="t1" class="input1" id="input8">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tds2">收货人详细地址：</td>
+                        <td width="30%" class="tds1">
+                            <input type="text" name="t1" class="input1" id="input9">
+                        </td>
+                        <td class="tds2">货物重量：</td>
+                        <td width="30%" class="tds1"><input type="text" name="t1" class="input1" id="input10">kg</td>
+                    </tr>
+                    <tr>
+                        <td class="tds2">货物体积：</td>
+                        <td width="30%" class="tds1"><input type="text" name="t1" class="input1" id="input11">cm*cm*cm
+                        </td>
+                        <td class="tds2">订单状态：</td>
+                        <td width="30%" class="tds1">
+                            <input type="text" name="t1" class="input1" id="input12">
+                        </td>
+                    </tr>
+                    <td class="tds2">备注：</td>
+                    <td class="tds1" style="border-right:#999999 solid 0px;">
+                        <input type="text" name="t6" style="width:400px" class="input1" id="input13">
+                    </td>
+                    <tr>
+                        <td colspan="4"><a href="dingDanLieBiao.html">返回</a></td>
+                    </tr>
+                </table>
+            </form>
+        </fieldset>
+    </div>
+</div>
+<script type="text/javascript">
+    var orderId123 = sessionStorage.getItem('order_id');
+    $.ajax({
+        type: "post",
+        url: "http://localhost:8080/selectFromThreeTable",
+        dataType: "JSON",
+        data: {
+            "orderId123": orderId123
+        },
+        async: true,
+        success: function (data) {
+            $("#input1").val(orderId123);
+            $("#input2").val(data.Order_Date);
+            $("#input3").val(data.customer_Name);
+            $("#input4").val(data.customer_Tel);
+            $("#input5").val(data.ship_Name);
+            $("#input6").val(data.receipt_Name);
+            $("#input7").val(data.receipt_People);
+            $("#input8").val(data.receipt_Tel);
+            $("#input9").val(data.receipt_Address);
+            $("#input10").val(data.goods_Weight);
+            $("#input11").val(data.goods_Volume);
+            $("#input12").val(data.order_Status);
+            $("#input13").val(data.order_Desc);
+        }
+    })
+
+
+</script>
+</body>
+</html>

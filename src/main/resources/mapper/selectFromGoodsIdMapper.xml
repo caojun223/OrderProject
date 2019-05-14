@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cao.mapper.GoodsDeliveryDtoMapper">
+    <select id="selectFromGoodsId" resultType="com.cao.dto.GoodsDeliveryDto">
+        SELECT oh.order_id,oh.receipt_people,oh.receipt_tel,oh.goods_weight,oh.goods_volume,oh.receipt_address
+        FROM order_handle oh,goods_handle gh,ship_info si,receipt_info ri
+        WHERE oh.ship_id=si.ship_id AND oh.receipt_id=ri.receipt_id
+        AND gh.ship_id=si.ship_id AND gh.receipt_id=ri.receipt_id AND gh.goods_id=#{goods_id};
+    </select>
+</mapper>

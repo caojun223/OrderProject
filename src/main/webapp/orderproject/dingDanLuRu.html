@@ -1,0 +1,175 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>填写订单</title>
+    <link rel="stylesheet" type="text/css" href="css/you.css"/>
+    <script type="text/javascript" src="js/function.js"></script>
+    <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+</head>
+
+<body>
+<!--上-->
+<div id="content" style="height:70px;">
+    <div id="haj1">
+        <div id="huang1">订单</div>
+        <div id="huang2"></div>
+    </div>
+    <div id="haj3">
+        <div id="anniu2">
+        </div>
+    </div>
+    <div id="haj4">
+    </div>
+</div>
+<!--下-->
+<div id="xia" style=\"height:expression(body.offsetHeight-70);">
+    <div id="tabb">
+        <fieldset>
+            <legend>基本资料</legend>
+            <form name="form1">
+                <table width="200" border="1" id="table" class="tab">
+                    <tr>
+                        <td width="20%" class="tds2">客户名：</td>
+                        <td width="30%" class="tds1"><input type="text" name="t1" class="input1" id="customerName"></td>
+                        <td width="20%" class="tds2">客户电话：</td>
+                        <td width="30%" class="tds1"><input type="text" name="t1" class="input1" id="customerTel"></td>
+                    </tr>
+                    <tr>
+                        <td class="tds2">发货站点：</td>
+                        <td width="30%" class="tds1">
+                            <select id="shipInfo">
+                                <option>请选择发货站点</option>
+                            </select>
+                        </td>
+                        <td class="tds2">收货站点：</td>
+                        <td width="30%" class="tds1">
+                            <select id="receiptInfo">
+                                <option>请选择收货站点</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tds2">收货人：</td>
+                        <td width="30%" class="tds1"><input type="text" name="t1" class="input1" id="receiptPeople">
+                        </td>
+                        <td class="tds2">收货人电话：</td>
+                        <td width="30%" class="tds1"><input type="text" name="t1" class="input1" id="receiptTel"></td>
+                    </tr>
+                    <tr>
+                        <td class="tds2">收货人详细地址：</td>
+                        <td width="30%" class="tds1"><input type="text" name="t1" class="input1"
+                                                            id="receiptPeopleAddress"></td>
+                        <td class="tds2">货物重量：</td>
+                        <td width="30%" class="tds1"><input type="text" name="t1" class="input1" id="goodsWeight">kg
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tds2">货物体积：</td>
+                        <td class="tds1">
+                            <input type="text" name="t2" class="input4" style="width:40px" id="length">(长cm)*
+                            <input type="text" name="t2" class="input4" style="width:40px" id="width">(宽cm)*
+                            <input type="text" name="t2" class="input4" style="width:40px" id="height">(高cm)
+                        </td>
+                        <td class="tds2">备注：</td>
+                        <td colspan="3" class="tds1" style="border-right:#999999 solid 0px;">
+                            <input type="text" name="t6" style="width:300px" class="input1" id="note">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"><input type="button" value="提交" onclick="insertOrder()"/></td>
+                    </tr>
+                </table>
+            </form>
+        </fieldset>
+    </div>
+</div>
+<script type="text/javascript">
+    var shipName;
+    var receiptName;
+    $.ajax({
+        type: "post",
+        url: "http://localhost:8080/selectAllShip",
+        dataType: "json",
+        async: true,
+        success: function (data) {
+            // console.log(data)
+            $.each(data, function (index, element) {
+                var trStr = "<option value='" + element.shipId + "'>" + element.shipName + "</option>"
+                $("#shipInfo").append(trStr);
+            })
+        }
+    });
+
+    $.ajax({
+        type: "post",
+        url: "http://localhost:8080/selectAllReceipt",
+        dataType: "json",
+        async: true,
+        success: function (data) {
+            // console.log(data)
+            $.each(data, function (index, element) {
+                var trStr = "<option value='" + element.receiptId + "'>" + element.receiptName + "</option>"
+                $("#receiptInfo").append(trStr);
+            })
+        }
+    });
+
+    function insertOrder() {
+        var customerName = $("#customerName").val();
+        var customerTel = $("#customerTel").val();
+        var shipAddress = $("#shipInfo").val();
+        var receiptAddress = $("#receiptInfo").val();
+        var receiptPeople = $("#receiptPeople").val();
+        var receiptTel = $("#receiptTel").val();
+        var receiptPeopleAddress = $("#receiptPeopleAddress").val();
+        var goodsWeight = $("#goodsWeight").val();
+        var length = $("#length").val();
+        var width = $("#width").val();
+        var height = $("#height").val();
+        var note = $("#note").val();
+        var goodsVolume = length + "*" + width + "*" + height;
+
+        $.ajax({
+            type: "post",
+            url: "/insertOrderHandleSelective",
+            contentType: "application/json;charset=UTF-8",
+            async: true,
+            data: JSON.stringify({
+                "customerName": customerName,
+                "customerTel": customerTel,
+                "shipId": shipAddress,
+                "receiptId": receiptAddress,
+                "receiptPeople": receiptPeople,
+                "receiptTel": receiptTel,
+                "receiptAddress": receiptPeopleAddress,
+                "goodsWeight": goodsWeight,
+                "goodsVolume": goodsVolume,
+                "orderDesc": note
+            }),
+            success: function (data) {
+                if (data == 1) {
+                    window.location.href = "dingDanLieBiao.html";
+                }
+            }
+        })
+
+        $.ajax({
+            type: "post",
+            url: "/insertGoodsHandleSelective",
+            contentType: "application/json;charset=UTF-8",
+            async: true,
+            data: JSON.stringify({
+                "shipId": shipAddress,
+                "receiptId": receiptAddress
+            }),
+            success: function (data) {
+                if (data == 1) {
+                    window.location.href = "dingDanLieBiao.html";
+                }
+            }
+        })
+
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cao.mapper.FreightComputeMapper">
+    <resultMap id="BaseResultMap" type="com.cao.pojo.FreightCompute">
+        <id column="Freight_Id" property="freightId" jdbcType="INTEGER"/>
+        <result column="Inner_Frist" property="innerFrist" jdbcType="INTEGER"/>
+        <result column="Inner_Second" property="innerSecond" jdbcType="INTEGER"/>
+        <result column="Outter_First" property="outterFirst" jdbcType="INTEGER"/>
+        <result column="Outter_Second" property="outterSecond" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    Freight_Id, Inner_Frist, Inner_Second, Outter_First, Outter_Second
+  </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cao.pojo.FreightComputeExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from freight_compute
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from freight_compute
+        where Freight_Id = #{freightId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from freight_compute
+    where Freight_Id = #{freightId,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.cao.pojo.FreightComputeExample">
+        delete from freight_compute
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.cao.pojo.FreightCompute">
+    insert into freight_compute (Freight_Id, Inner_Frist, Inner_Second, 
+      Outter_First, Outter_Second)
+    values (#{freightId,jdbcType=INTEGER}, #{innerFrist,jdbcType=INTEGER}, #{innerSecond,jdbcType=INTEGER}, 
+      #{outterFirst,jdbcType=INTEGER}, #{outterSecond,jdbcType=INTEGER})
+  </insert>
+    <insert id="insertSelective" parameterType="com.cao.pojo.FreightCompute">
+        insert into freight_compute
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="freightId != null">
+                Freight_Id,
+            </if>
+            <if test="innerFrist != null">
+                Inner_Frist,
+            </if>
+            <if test="innerSecond != null">
+                Inner_Second,
+            </if>
+            <if test="outterFirst != null">
+                Outter_First,
+            </if>
+            <if test="outterSecond != null">
+                Outter_Second,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="freightId != null">
+                #{freightId,jdbcType=INTEGER},
+            </if>
+            <if test="innerFrist != null">
+                #{innerFrist,jdbcType=INTEGER},
+            </if>
+            <if test="innerSecond != null">
+                #{innerSecond,jdbcType=INTEGER},
+            </if>
+            <if test="outterFirst != null">
+                #{outterFirst,jdbcType=INTEGER},
+            </if>
+            <if test="outterSecond != null">
+                #{outterSecond,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.cao.pojo.FreightComputeExample" resultType="java.lang.Integer">
+        select count(*) from freight_compute
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update freight_compute
+        <set>
+            <if test="record.freightId != null">
+                Freight_Id = #{record.freightId,jdbcType=INTEGER},
+            </if>
+            <if test="record.innerFrist != null">
+                Inner_Frist = #{record.innerFrist,jdbcType=INTEGER},
+            </if>
+            <if test="record.innerSecond != null">
+                Inner_Second = #{record.innerSecond,jdbcType=INTEGER},
+            </if>
+            <if test="record.outterFirst != null">
+                Outter_First = #{record.outterFirst,jdbcType=INTEGER},
+            </if>
+            <if test="record.outterSecond != null">
+                Outter_Second = #{record.outterSecond,jdbcType=INTEGER},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update freight_compute
+        set Freight_Id = #{record.freightId,jdbcType=INTEGER},
+        Inner_Frist = #{record.innerFrist,jdbcType=INTEGER},
+        Inner_Second = #{record.innerSecond,jdbcType=INTEGER},
+        Outter_First = #{record.outterFirst,jdbcType=INTEGER},
+        Outter_Second = #{record.outterSecond,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cao.pojo.FreightCompute">
+        update freight_compute
+        <set>
+            <if test="innerFrist != null">
+                Inner_Frist = #{innerFrist,jdbcType=INTEGER},
+            </if>
+            <if test="innerSecond != null">
+                Inner_Second = #{innerSecond,jdbcType=INTEGER},
+            </if>
+            <if test="outterFirst != null">
+                Outter_First = #{outterFirst,jdbcType=INTEGER},
+            </if>
+            <if test="outterSecond != null">
+                Outter_Second = #{outterSecond,jdbcType=INTEGER},
+            </if>
+        </set>
+        where Freight_Id = #{freightId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cao.pojo.FreightCompute">
+    update freight_compute
+    set Inner_Frist = #{innerFrist,jdbcType=INTEGER},
+      Inner_Second = #{innerSecond,jdbcType=INTEGER},
+      Outter_First = #{outterFirst,jdbcType=INTEGER},
+      Outter_Second = #{outterSecond,jdbcType=INTEGER}
+    where Freight_Id = #{freightId,jdbcType=INTEGER}
+  </update>
+</mapper>

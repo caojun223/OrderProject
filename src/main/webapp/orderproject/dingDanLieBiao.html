@@ -1,0 +1,80 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>订单处理</title>
+    <link rel="stylesheet" type="text/css" href="css/you.css"/>
+    <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+</head>
+
+<body>
+<!--上-->
+<div id="content">
+    <div id="haj1">
+        <div id="huang1">订单处理</div>
+        <div id="huang2"></div>
+    </div>
+    <div id="haj2">
+        <div id="haj3">
+            <div id="anniu2">
+            </div>
+        </div>
+        <div id="haj4">
+            <div id="fen">第1/1页 每页10条</div>
+            <div id="ye"><img src="images/nos/nos_08.gif">
+                <img src="images/nos/nos_09.gif"> 1 <img src="images/nos/nos_10.gif"> <img src="images/nos/nos_11.gif">
+                共1页
+            </div>
+        </div>
+    </div>
+    <!--下-->
+    <div id="xia">
+        <div id="tabb">
+            <form name="form1">
+                <table width="200" border="1" id="table" class="tab">
+                    <tr class="trs">
+                        <td width="10%">订单</td>
+                        <td width="10%">客户名称</td>
+                        <td width="15%">下单日期</td>
+                        <td width="15%">订单状态</td>
+                        <td width="10%">发货站点</td>
+                        <td width="10%">收货站点</td>
+                        <td width="10%">点击结算</td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $.ajax({
+        type: "post",
+        url: "http://localhost:8080/selectFromTwoTable",
+        dataType: "json",
+        async: true,
+        success: function (data) {
+            $.each(data, function (index, element) {
+                var trStr = "<tr>" +
+                    "<td>" + "<a href='dingDanXiangQing.html' target='ab' style='border:0' onclick='chuanzhi(" + element.order_id + ")'>" + element.order_id + "</a>" + "</td>" +
+                    "<td>" + element.customer_name + "</td>" +
+                    "<td>" + element.order_date + "</td>" +
+                    "<td>" + element.order_status + "</td>" +
+                    "<td>" + element.ship_name + "</td>" +
+                    "<td>" + element.receipt_name + "</td>" +
+                    "<td>" + "<a href='yunFeiJiSuan.html' target='ab' style='border:0' onclick='jieSuan(" + element.order_id + ")'>" + "结算" + "</a>" + "</td>" +
+                    "</tr>"
+                $("#table").append(trStr);
+            });
+        }
+    });
+
+    function chuanzhi(order_id) {
+        // alert(order_id);
+        sessionStorage.setItem('order_id', order_id);
+    }
+
+    function jieSuan(order_id) {
+        sessionStorage.setItem('id', order_id);
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>运费计算</title>
+    <link rel="stylesheet" type="text/css" href="css/you.css"/>
+    <script type="text/javascript" src="js/function.js"></script>
+    <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+</head>
+
+<body>
+<!--上-->
+<div id="content" style="height:70px;">
+
+    <div id="haj1">
+        <div id="huang1">运费计算</div>
+    </div>
+
+    <div id="haj3">
+        <div id="anniu2">
+
+        </div>
+    </div>
+
+    <div id="haj4">
+    </div>
+
+</div>
+<!--下-->
+<div id="xia" style=\"height:expression(body.offsetHeight-70);">
+    <div id="tabb">
+        <fieldset>
+            <legend>运费计算</legend>
+            <form name="form1" method="post">
+                <table width="200" border="1" id="table" class="tab">
+                    <tr>
+                        <td width="20%" class="tds2">发货地址：</td>
+                        <td width="30%" class="tds1">
+                            <input type="text" name="t2" class="input4" style="width:90px" id="shipInfo">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="20%" class="tds2">收货地址：</td>
+                        <td width="30%" class="tds1">
+                            <input type="text" name="t2" class="input4" style="width:90px" id="receiptInfo">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tds2">货物重量：</td>
+                        <td class="tds1">
+                            <input type="text" name="t2" class="input4" style="width:90px" id="goodsWeight">kg
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tds2">货物体积：</td>
+                        <td class="tds1">
+                            <input type="text" name="t2" class="input4" style="width:90px" id="length">(长cm)*
+                            <input type="text" name="t2" class="input4" style="width:90px" id="width">(宽cm)*
+                            <input type="text" name="t2" class="input4" style="width:90px" id="height">(高cm)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <input type="button" value="计算" onclick="compute()">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </fieldset>
+    </div>
+    <div>
+        计算结果：<span id="totle" style="color: #ff0000"></span>元，预计2天
+    </div>
+</div>
+<script type="text/javascript">
+    var orderId123 = sessionStorage.getItem('id');
+    var innerFirst;
+    var innerSecond;
+    var outterFirst;
+    var outterSecond;
+    $.ajax({
+        type: "post",
+        url: "http://localhost:8080/selectFromThreeTable",
+        dataType: "JSON",
+        data: {
+            "orderId123": orderId123
+        },
+        async: true,
+        success: function (data) {
+            console.log(data);
+            $("#shipInfo").val(data.ship_Name);
+            $("#receiptInfo").val(data.receipt_Name);
+            $("#goodsWeight").val(data.goods_Weight);
+            var volume = data.goods_Volume;
+            var goodsVolume = volume.split('*');
+            // alert(goodsVolume);
+            $("#length").val(goodsVolume[0]);
+            $("#width").val(goodsVolume[1]);
+            $("#height").val(goodsVolume[2]);
+        }
+    });
+    $.ajax({
+        type: "post",
+        url: "/selectFreightCompute",
+        dataType: "json",
+        async: false,
+        success: function (data) {
+            console.log(data);
+            $.each(data, function (index, element) {
+                innerFirst = element.innerFrist;
+                innerSecond = element.innerSecond;
+                outterFirst = element.outterFirst;
+                outterSecond = element.outterSecond;
+            })
+        }
+    });
+
+    function compute() {
+        var shipInfo = $("#shipInfo").val();
+        var receiptInfo = $("#receiptInfo").val();
+        var goodsWeight = $("#goodsWeight").val();
+        var length = $("#length").val();
+        var width = $("#width").val();
+        var height = $("#height").val();
+        var goodsVolume = length * width * height;
+        var totelPrice;
+        /*总价=首重*1+（总重-1）*4*/
+        if (shipInfo == receiptInfo) {//判断是否省内
+            if ((goodsWeight - 1) >= 0) {
+                widthInnerOut = goodsWeight - 1;//计算续重
+                totelPrice = innerFirst * 1 + innerSecond * widthInnerOut;
+            } else if ((goodsWeight - 1) < 1) {
+                totelPrice = 0;
+            } else if (goodsWeight = 0) {
+                totelPrice = innerFirst;
+            }
+        } else {
+            if ((goodsWeight - 1) >= 0) {
+                widthOutOut = goodsWeight - 1;
+                totelPrice = outterFirst * 1 + outterSecond * widthOutOut;
+            } else if ((goodsWeight - 1) < 1) {
+                totelPrice = 0;
+            } else if (goodsWeight = 0) {
+                totelPrice = outterFirst;
+            }
+        }
+        document.getElementById('totle').innerHTML = totelPrice;
+    }
+</script>
+</body>
+</html>

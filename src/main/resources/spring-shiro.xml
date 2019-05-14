@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+       default-lazy-init="true">
+
+    <!-- 配置安全管理器securityManager， 缓存技术: 缓存管理 realm:负责获取处理数据 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myShiroRealm" />
+        <property name="cacheManager" ref="cacheManager" />
+
+    </bean>
+
+    <!-- 項目自定义的Realm,从数据库中获取用户的安全数据 -->
+    <bean id="myShiroRealm" class="com.cao.shiro.UserRealm">
+        <!-- 配置缓存管理器-->
+        <property name="cacheManager" ref="cacheManager" />
+
+    </bean>
+
+    <!-- 用户授权信息Cache -->
+    <bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
+
+    <!-- 必须配置lifecycleBeanPostProcessor:管理shiro中常见的对象 -->
+    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+
+    <!-- shiro的核心配置:  配置shiroFileter id名必须与web.xml中的filtername保持一致 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager" />
+        <property name="loginUrl" value="/orderproject/login.html" />
+        <property name="successUrl" value="/orderproject/index.html" />
+        <property name="unauthorizedUrl" value="/orderproject/unshiro.html" />
+        <!-- shiro过滤器的具体配置 -->
+        <!-- anon-匿名访问，authc-需要认证 -->
+        <property name="filterChainDefinitions">
+            <value>
+                /orderproject/css/** = anon
+                /orderproject/js/** = anon
+                /orderproject/fonts/** = anon
+                /orderproject/images/** = anon
+                /orderproject/login.html = anon
+                /orderproject/index.html = anon
+                /orderproject/dingDanLieBiao.html = anon
+                /orderproject/yunFeiJiSuan.html = anon
+                /orderproject/left.html = anon
+                /orderproject/list.html = anon
+                /routeadd.html = roles[admin]
+                /** = authc
+            </value>
+        </property>
+    </bean>
+</beans>

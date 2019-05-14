@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cao.dto.UserRoleDto">
+    <select id="selectRoleByUserName" resultType="com.cao.dto.UserRoleDto">
+        SELECT ui.userid,ui.username,ui.userpass,ri.rolename
+        FROM user_info ui,role_info ri,user_role ur
+        WHERE ui.userid=ur.userid AND ri.roleid=ur.roleid AND ui.username=#{username}
+    </select>
+</mapper>

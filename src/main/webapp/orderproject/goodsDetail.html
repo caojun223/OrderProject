@@ -1,0 +1,229 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>配送单详情</title>
+    <link rel="stylesheet" type="text/css" href="css/you.css"/>
+    <script type="text/javascript" src="js/function.js"></script>
+    <script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+    <style type="text/css">
+        #xia #table1.tab {
+            border-collapse: collapse;
+            border: #333333 solid 1px;
+            font-family: "宋体";
+            font-size: 12px;
+            width: 100%;
+            margin-bottom: 2px;
+        }
+
+        #xia #table1.tab td {
+            border-collapse: collapse;
+            font-family: "宋体";
+            font-size: 12px;
+            text-align: center;
+            border: #333333 solid 1px;
+            height: 20px;
+            table-layout: fixed;
+        }
+
+        #xia #table1.tab td.tds {
+            border-collapse: collapse;
+            font-family: "宋体";
+            font-size: 12px;
+            text-align: center;
+            border: #333333 solid 1px;
+            height: 30px;
+        }
+
+        #xia #table1.tab td.tds1 {
+            border-collapse: collapse;
+            font-family: "宋体";
+            font-size: 12px;
+            text-align: left;
+            border: #333333 solid 1px;
+            padding-left: 10px;
+        }
+
+        #xia #table1.tab td.tds2 {
+            border-collapse: collapse;
+            font-family: "宋体";
+            font-size: 12px;
+            text-align: right;
+            border: #333333 solid 1px;
+            padding-right: 10px;
+        }
+
+        #xia #table1.tab td.tds3 {
+            border-collapse: collapse;
+            font-family: "宋体";
+            font-size: 12px;
+            text-align: right;
+            border: #333333 solid 1px;
+            padding-right: 30px;
+        }
+
+        #xia #table1.tab td.tds4 {
+            border-collapse: collapse;
+            font-family: "宋体";
+            font-size: 12px;
+            text-align: left;
+            border: #333333 solid 1px;
+            padding-left: 43px;
+        }
+
+        #xia #table1.tab tr {
+            border-collapse: collapse;
+            background-color: expression('#D8E9FF,#ffffff'.split(',')[rowIndex%2]);
+        }
+
+        #xia #table1.tab tr.trs {
+            font-family: "宋体";
+            font-size: 12px;
+            text-align: center;
+            background-image: url(/images/nos/nos_12.gif);
+            background-repeat: repeat-x;
+            background-position: center;
+        }
+
+        #xia #table1.tab td a:link {
+            border: #333333 solid 1px;
+            font-family: "宋体";
+            font-size: 12px;
+            height: 15px;
+            text-decoration: underline;
+            color: #000000;
+            border: 0;
+        }
+
+        #xia #table1.tab td a:visited {
+            border: #333333 solid 1px;
+            font-family: "宋体";
+            font-size: 12px;
+            height: 15px;
+            text-decoration: underline;
+            color: #000000;
+            border: 0;
+        }
+
+        #xia #table1.tab td a:hover {
+            border: #333333 solid 1px;
+            font-family: "宋体";
+            font-size: 12px;
+            height: 15px;
+            text-decoration: underline;
+            color: #FF00FF;
+            border: 0;
+            cursor: hand;
+        }
+    </style>
+</head>
+
+<body>
+<!--上-->
+<div id="content" style="height:70px;">
+    <div id="haj1">
+        <div id="huang1">配送单详情</div>
+        <div id="huang2"></div>
+    </div>
+    <div id="haj3">
+        <div id="anniu2">
+        </div>
+    </div>
+    <div id="haj4">
+    </div>
+</div>
+<!--下-->
+<div id="xia" style=\"height:expression(body.offsetHeight-70);">
+    <div id="tabb">
+        <fieldset>
+            <legend>基本信息</legend>
+            配送单编号：
+            <input type="text" name="t32" class="input1" value="AY45a151" id="yundanbianhao">
+            <table width="200" border="1" id="table1" class="tab">
+                <tr>
+                    <td class="tds2">当前站点：</td>
+                    <td class="tds1" id="dangqianzhan"></td>
+                    <td class="tds2">下一站：</td>
+                    <td class="tds1" id="xiayizhan"></td>
+                </tr>
+                <tr>
+                    <td class="tds2">发货时间：</td>
+                    <td class="tds1" id="shipDate"></td>
+                    <td class="tds2">收货时间：</td>
+                    <td class="tds1" id="receiptDate"></td>
+                </tr>
+            </table>
+            <br/>
+            <table width="200" border="1" id="table" class="tab">
+                <tr>
+                    <td class="tds2">订单编号</td>
+                    <td class="tds2">收货人</td>
+                    <td class="tds2">联系方式</td>
+                    <td class="tds1">重量(kg)</td>
+                    <td class="tds2">体积(cm*cm*cm)</td>
+                    <td class="tds2">收货人地址</td>
+                </tr>
+            </table>
+            <tr>
+                <td colspan="6" class="tds2">
+                    <input type="button" value="返回" onclick="history.back();"/>
+                </td>
+            </tr>
+        </fieldset>
+    </div>
+</div>
+<script type="text/javascript">
+    var goodsId = sessionStorage.getItem('goods_id');
+    // alert(goodsId);
+
+    $.ajax({
+        type: "post",
+        url: "/selectAllGoodsHandleByGoodsId",
+        dataType: "json",
+        async: true,
+        data: {"goods_id": goodsId},
+        success: function (data) {
+            console.log(data);
+            $.each(data, function (index, element) {
+                var shipDate = null ? -1 : '';
+                var receiptDate = null ? -1 : '';
+                var bianhao = element.delivery_id;
+                var dangqianzhan = element.ship_name;
+                var xiayizhan = element.receipt_name;
+                $("#yundanbianhao").val(bianhao);
+                $("#dangqianzhan").append(dangqianzhan);
+                $("#xiayizhan").append(xiayizhan);
+                $("#shipDate").append(shipDate);
+                $("#receiptDate").append(receiptDate);
+            })
+        }
+    })
+
+    $.ajax({
+        type: "post",
+        url: "/selectFromGoodsId",
+        dataType: "json",
+        async: true,
+        data: {"goods_id": goodsId},
+        success: function (data) {
+            console.log(data);
+            $.each(data, function (index, element) {
+                var trStr = "<tr>" +
+                    "<td class='tds2'>" + "<a href='dingDanXiangQingForSongHuo.html' onclick='shouhuodingdan(" + element.order_id + ")'>" + element.order_id + "</a></td>" +
+                    "<td>" + element.receipt_people + "</td>" +
+                    "<td>" + element.receipt_tel + "</td>" +
+                    "<td>" + element.goods_weight + "</td>" +
+                    "<td>" + element.goods_volume + "</td>" +
+                    "<td>" + element.receipt_address + "</td>" +
+                    "</tr>"
+                $("#table").append(trStr);
+            })
+        }
+    })
+
+    function shouhuodingdan(order_id) {
+        // alert(order_id);
+        sessionStorage.setItem('order_id',order_id);
+    }
+</script>
+</body>
+</html>

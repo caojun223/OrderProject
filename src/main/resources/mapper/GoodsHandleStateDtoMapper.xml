@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cao.mapper.GoodsHandleStateDtoMapper">
+
+    <!--根据ID查询当前状态-->
+    <select id="selectGoodsStateById" parameterType="Integer" resultType="String">
+        SELECT goods_desc FROM goods_handle WHERE goods_id=#{goods_id}
+    </select>
+
+    <!--根据ID修改当前状态-->
+    <update id="updateGoodsStateById" parameterType="com.cao.dto.GoodsHandleStateDto">
+        UPDATE goods_handle SET goods_desc = #{goods_desc} WHERE goods_id=#{goods_id}
+    </update>
+
+    <!--修改发货时间-->
+    <update id="updateShipDate">
+        UPDATE goods_handle SET ship_date = #{arg0} WHERE goods_id=#{arg1}
+    </update>
+
+    <!--根据ID查询收货状态-->
+    <select id="selectReceiptStateById" parameterType="Integer" resultType="String">
+        SELECT goods_desc FROM goods_handle WHERE goods_id=#{goods_id}
+    </select>
+    <!--根据ID修改收货状态-->
+    <select id="updateReceiptStateById" parameterType="com.cao.dto.GoodsHandleStateDto">
+        UPDATE goods_handle SET goods_desc = #{goods_desc} WHERE goods_id=#{goods_id}
+    </select>
+    <!--根据ID修改收货时间-->
+    <update id="updateReceiptDate">
+        UPDATE goods_handle SET receipt_date = #{arg0} WHERE goods_id=#{arg1}
+    </update>
+</mapper>

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cao.mapper.ReceiptInfoMapper">
+    <resultMap id="BaseResultMap" type="com.cao.pojo.ReceiptInfo">
+        <id column="Receipt_Id" property="receiptId" jdbcType="INTEGER"/>
+        <result column="Receipt_Number" property="receiptNumber" jdbcType="VARCHAR"/>
+        <result column="Receipt_Name" property="receiptName" jdbcType="VARCHAR"/>
+        <result column="Receipt_Province" property="receiptProvince" jdbcType="VARCHAR"/>
+        <result column="Receipt_Address" property="receiptAddress" jdbcType="VARCHAR"/>
+        <result column="Receipt_Tel" property="receiptTel" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    Receipt_Id, Receipt_Number, Receipt_Name, Receipt_Province, Receipt_Address, Receipt_Tel
+  </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cao.pojo.ReceiptInfoExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from receipt_info
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from receipt_info
+        where Receipt_Id = #{receiptId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from receipt_info
+    where Receipt_Id = #{receiptId,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.cao.pojo.ReceiptInfoExample">
+        delete from receipt_info
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.cao.pojo.ReceiptInfo">
+    insert into receipt_info (Receipt_Id, Receipt_Number, Receipt_Name, 
+      Receipt_Province, Receipt_Address, Receipt_Tel
+      )
+    values (#{receiptId,jdbcType=INTEGER}, #{receiptNumber,jdbcType=VARCHAR}, #{receiptName,jdbcType=VARCHAR}, 
+      #{receiptProvince,jdbcType=VARCHAR}, #{receiptAddress,jdbcType=VARCHAR}, #{receiptTel,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.cao.pojo.ReceiptInfo">
+        insert into receipt_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="receiptId != null">
+                Receipt_Id,
+            </if>
+            <if test="receiptNumber != null">
+                Receipt_Number,
+            </if>
+            <if test="receiptName != null">
+                Receipt_Name,
+            </if>
+            <if test="receiptProvince != null">
+                Receipt_Province,
+            </if>
+            <if test="receiptAddress != null">
+                Receipt_Address,
+            </if>
+            <if test="receiptTel != null">
+                Receipt_Tel,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="receiptId != null">
+                #{receiptId,jdbcType=INTEGER},
+            </if>
+            <if test="receiptNumber != null">
+                #{receiptNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="receiptName != null">
+                #{receiptName,jdbcType=VARCHAR},
+            </if>
+            <if test="receiptProvince != null">
+                #{receiptProvince,jdbcType=VARCHAR},
+            </if>
+            <if test="receiptAddress != null">
+                #{receiptAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="receiptTel != null">
+                #{receiptTel,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.cao.pojo.ReceiptInfoExample" resultType="java.lang.Integer">
+        select count(*) from receipt_info
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update receipt_info
+        <set>
+            <if test="record.receiptId != null">
+                Receipt_Id = #{record.receiptId,jdbcType=INTEGER},
+            </if>
+            <if test="record.receiptNumber != null">
+                Receipt_Number = #{record.receiptNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="record.receiptName != null">
+                Receipt_Name = #{record.receiptName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.receiptProvince != null">
+                Receipt_Province = #{record.receiptProvince,jdbcType=VARCHAR},
+            </if>
+            <if test="record.receiptAddress != null">
+                Receipt_Address = #{record.receiptAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.receiptTel != null">
+                Receipt_Tel = #{record.receiptTel,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update receipt_info
+        set Receipt_Id = #{record.receiptId,jdbcType=INTEGER},
+        Receipt_Number = #{record.receiptNumber,jdbcType=VARCHAR},
+        Receipt_Name = #{record.receiptName,jdbcType=VARCHAR},
+        Receipt_Province = #{record.receiptProvince,jdbcType=VARCHAR},
+        Receipt_Address = #{record.receiptAddress,jdbcType=VARCHAR},
+        Receipt_Tel = #{record.receiptTel,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cao.pojo.ReceiptInfo">
+        update receipt_info
+        <set>
+            <if test="receiptNumber != null">
+                Receipt_Number = #{receiptNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="receiptName != null">
+                Receipt_Name = #{receiptName,jdbcType=VARCHAR},
+            </if>
+            <if test="receiptProvince != null">
+                Receipt_Province = #{receiptProvince,jdbcType=VARCHAR},
+            </if>
+            <if test="receiptAddress != null">
+                Receipt_Address = #{receiptAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="receiptTel != null">
+                Receipt_Tel = #{receiptTel,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where Receipt_Id = #{receiptId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cao.pojo.ReceiptInfo">
+    update receipt_info
+    set Receipt_Number = #{receiptNumber,jdbcType=VARCHAR},
+      Receipt_Name = #{receiptName,jdbcType=VARCHAR},
+      Receipt_Province = #{receiptProvince,jdbcType=VARCHAR},
+      Receipt_Address = #{receiptAddress,jdbcType=VARCHAR},
+      Receipt_Tel = #{receiptTel,jdbcType=VARCHAR}
+    where Receipt_Id = #{receiptId,jdbcType=INTEGER}
+  </update>
+</mapper>

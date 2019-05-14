@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cao.mapper.GoodsHandleMapper">
+    <resultMap id="BaseResultMap" type="com.cao.pojo.GoodsHandle">
+        <id column="Goods_Id" property="goodsId" jdbcType="INTEGER"/>
+        <result column="Delivery_Id" property="deliveryId" jdbcType="VARCHAR"/>
+        <result column="Ship_Id" property="shipId" jdbcType="INTEGER"/>
+        <result column="Receipt_Id" property="receiptId" jdbcType="INTEGER"/>
+        <result column="Goods_Desc" property="goodsDesc" jdbcType="VARCHAR"/>
+        <result column="Ship_Date" property="shipDate" jdbcType="TIMESTAMP"/>
+        <result column="Receipt_Date" property="receiptDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    Goods_Id, Delivery_Id, Ship_Id, Receipt_Id, Goods_Desc, Ship_Date, Receipt_Date
+  </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cao.pojo.GoodsHandleExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from goods_handle
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from goods_handle
+        where Goods_Id = #{goodsId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from goods_handle
+    where Goods_Id = #{goodsId,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.cao.pojo.GoodsHandleExample">
+        delete from goods_handle
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.cao.pojo.GoodsHandle">
+    insert into goods_handle (Goods_Id, Delivery_Id, Ship_Id, 
+      Receipt_Id, Goods_Desc, Ship_Date, 
+      Receipt_Date)
+    values (#{goodsId,jdbcType=INTEGER}, #{deliveryId,jdbcType=VARCHAR}, #{shipId,jdbcType=INTEGER}, 
+      #{receiptId,jdbcType=INTEGER}, #{goodsDesc,jdbcType=VARCHAR}, #{shipDate,jdbcType=TIMESTAMP}, 
+      #{receiptDate,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.cao.pojo.GoodsHandle">
+        insert into goods_handle
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">
+                Goods_Id,
+            </if>
+            <if test="deliveryId != null">
+                Delivery_Id,
+            </if>
+            <if test="shipId != null">
+                Ship_Id,
+            </if>
+            <if test="receiptId != null">
+                Receipt_Id,
+            </if>
+            <if test="goodsDesc != null">
+                Goods_Desc,
+            </if>
+            <if test="shipDate != null">
+                Ship_Date,
+            </if>
+            <if test="receiptDate != null">
+                Receipt_Date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null">
+                #{goodsId,jdbcType=INTEGER},
+            </if>
+            <if test="deliveryId != null">
+                #{deliveryId,jdbcType=VARCHAR},
+            </if>
+            <if test="shipId != null">
+                #{shipId,jdbcType=INTEGER},
+            </if>
+            <if test="receiptId != null">
+                #{receiptId,jdbcType=INTEGER},
+            </if>
+            <if test="goodsDesc != null">
+                #{goodsDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="shipDate != null">
+                #{shipDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="receiptDate != null">
+                #{receiptDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.cao.pojo.GoodsHandleExample" resultType="java.lang.Integer">
+        select count(*) from goods_handle
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update goods_handle
+        <set>
+            <if test="record.goodsId != null">
+                Goods_Id = #{record.goodsId,jdbcType=INTEGER},
+            </if>
+            <if test="record.deliveryId != null">
+                Delivery_Id = #{record.deliveryId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.shipId != null">
+                Ship_Id = #{record.shipId,jdbcType=INTEGER},
+            </if>
+            <if test="record.receiptId != null">
+                Receipt_Id = #{record.receiptId,jdbcType=INTEGER},
+            </if>
+            <if test="record.goodsDesc != null">
+                Goods_Desc = #{record.goodsDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="record.shipDate != null">
+                Ship_Date = #{record.shipDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.receiptDate != null">
+                Receipt_Date = #{record.receiptDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update goods_handle
+        set Goods_Id = #{record.goodsId,jdbcType=INTEGER},
+        Delivery_Id = #{record.deliveryId,jdbcType=VARCHAR},
+        Ship_Id = #{record.shipId,jdbcType=INTEGER},
+        Receipt_Id = #{record.receiptId,jdbcType=INTEGER},
+        Goods_Desc = #{record.goodsDesc,jdbcType=VARCHAR},
+        Ship_Date = #{record.shipDate,jdbcType=TIMESTAMP},
+        Receipt_Date = #{record.receiptDate,jdbcType=TIMESTAMP}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cao.pojo.GoodsHandle">
+        update goods_handle
+        <set>
+            <if test="deliveryId != null">
+                Delivery_Id = #{deliveryId,jdbcType=VARCHAR},
+            </if>
+            <if test="shipId != null">
+                Ship_Id = #{shipId,jdbcType=INTEGER},
+            </if>
+            <if test="receiptId != null">
+                Receipt_Id = #{receiptId,jdbcType=INTEGER},
+            </if>
+            <if test="goodsDesc != null">
+                Goods_Desc = #{goodsDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="shipDate != null">
+                Ship_Date = #{shipDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="receiptDate != null">
+                Receipt_Date = #{receiptDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where Goods_Id = #{goodsId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cao.pojo.GoodsHandle">
+    update goods_handle
+    set Delivery_Id = #{deliveryId,jdbcType=VARCHAR},
+      Ship_Id = #{shipId,jdbcType=INTEGER},
+      Receipt_Id = #{receiptId,jdbcType=INTEGER},
+      Goods_Desc = #{goodsDesc,jdbcType=VARCHAR},
+      Ship_Date = #{shipDate,jdbcType=TIMESTAMP},
+      Receipt_Date = #{receiptDate,jdbcType=TIMESTAMP}
+    where Goods_Id = #{goodsId,jdbcType=INTEGER}
+  </update>
+
+
+</mapper>
